@@ -1,26 +1,17 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  .card {
+    @apply bg-background-card rounded-xl p-6 hover:bg-gray-700 transition-colors;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  
+  .button {
+    @apply bg-background-card px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors flex items-center gap-2;
+  }
+  
+  .input {
+    @apply border-b-4 border-gray-800 bg-background-input text-white focus:outline-none w-full py-2 px-4 text-xl;
+  }
 }

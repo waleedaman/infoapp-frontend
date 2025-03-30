@@ -1,6 +1,5 @@
+import NameForm from './components/NameForm';
 
 export default function Home() {
-  return (
-    <div></div>
-  );
+  return <NameForm />;
 }
