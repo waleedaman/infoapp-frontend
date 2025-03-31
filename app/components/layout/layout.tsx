@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PaperAirplaneIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import Card from './ui/Card';
-
+import Card from '../ui/Card';
+import Image from 'next/image';
 type Message = {
   role: 'user' | 'system' | 'loading';
   content: string;
@@ -87,11 +87,11 @@ const Dashboard = (DashboardProps: DashboardProps) => {
     e.preventDefault();
     if (message.trim() === '') return;
 
-    const userMessage = { role: 'user', content: message };
+    const userMessage: Message = { role: 'user', content: message };
     setMessages([...messages, userMessage]);
     setMessage('');
 
-    const loadingMessage = { role: 'loading', content: '' };
+    const loadingMessage: Message = { role: 'loading', content: '' };
     setMessages(prev => [...prev, loadingMessage]);
 
     setTimeout(() => {
@@ -170,7 +170,11 @@ const Dashboard = (DashboardProps: DashboardProps) => {
                   onClick={() => setExpandedCardIndex(expandedCardIndex === index ? null : index)}
                 >
                   <div className="h-48 overflow-hidden">
-                    <img
+                    <Image
+                      width={400}
+                      height={200}
+                      quality={100}
+                      priority
                       src={card.image}
                       alt={card.title}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
@@ -216,7 +220,7 @@ const Dashboard = (DashboardProps: DashboardProps) => {
                 AI Assistant
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                I'm your AI travel companion. I can answer questions and help you prepare required documents for your trip.
+                I`&apos;`m your AI travel companion. I can answer questions and help you prepare required documents for your trip.
               </p>
 
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-inner p-4">

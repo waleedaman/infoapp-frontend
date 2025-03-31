@@ -1,10 +1,9 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Dashboard from "./Dashboard";
-import { useRouter, usePathname } from 'next/navigation';
+import {  usePathname } from 'next/navigation';
 
 export default function NameForm() {
-  const router = useRouter();
   const pathname = usePathname();
   const [currentStep, setCurrentStep] = useState(1);
   const [title, setTitle] = useState("");
@@ -14,8 +13,14 @@ export default function NameForm() {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [travelReason, setTravelReason] = useState('');
   const [showDashboard, setShowDashboard] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
   const [animateText, setAnimateText] = useState(false);
+
+  interface apiResponse {
+    name: string;
+    display_name: string;
+    type: string;
+    class: string;
+  }
 
   const resetForm = () => {
     setCurrentStep(1);
@@ -49,26 +54,21 @@ export default function NameForm() {
     setCurrentStep(prev => Math.max(1, prev - 1));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    alert(`${title} ${name}, how are you doing today?`);
-  };
-
   const handleLocationSearch = async (query: string) => {
     try {
       const response = await fetch(
         `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&type=city&featuretype=city`
       );
       if (!response.ok) throw new Error('Failed to fetch locations');
-      const data = await response.json();
+      const data: apiResponse[] = await response.json();
 
       // Filter to only include results with city in their type
-      const cityResults = data.filter((item: any) =>
+      const cityResults = data.filter((item: apiResponse) =>
         item.type === 'city' ||
         item.class === 'boundary' && item.type === 'administrative'
       );
 
-      setSuggestions(cityResults.map((item: any) => item.display_name));
+      setSuggestions(cityResults.map((item: apiResponse) => item.display_name));
     } catch (error) {
       console.error('Location search error:', error);
       setSuggestions([]);

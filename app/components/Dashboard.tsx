@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { PaperAirplaneIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
-import Card from './ui/Card';
-import FileDropArea from './ui/file';
-
+import Card from '../components/ui/Card';
+import FileDropArea from '../components/ui/file';
+import Image from 'next/image';
 type Message = {
   role: 'user' | 'system' | 'loading';
   content: string;
@@ -27,7 +27,7 @@ const Dashboard = (DashboardProps: DashboardProps) => {
   ]);
   const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-
+  console.log(uploadedFiles);
   // User and travel information (would be fetched from backend in a real app)
   const name = DashboardProps.name;
   const location = DashboardProps.location;
@@ -70,8 +70,8 @@ const Dashboard = (DashboardProps: DashboardProps) => {
       
       // Add a message to the chat about the uploaded files
       const fileNames = files.map(file => file.name).join(', ');
-      const userMessage = { role: 'user', content: `I've uploaded: ${fileNames}` };
-      const systemResponse = { 
+      const userMessage: Message = { role: 'user', content: `I've uploaded: ${fileNames}` };
+      const systemResponse: Message = { 
         role: 'system', 
         content: `I've received your document${files.length > 1 ? 's' : ''}: ${fileNames}. I'll analyze ${files.length > 1 ? 'them' : 'it'} and let you know if I find anything relevant for your trip to ${destination}.` 
       };
@@ -107,11 +107,11 @@ const Dashboard = (DashboardProps: DashboardProps) => {
     e.preventDefault();
     if (message.trim() === '') return;
 
-    const userMessage = { role: 'user', content: message };
+    const userMessage: Message= { role: 'user', content: message };
     setMessages([...messages, userMessage]);
     setMessage('');
 
-    const loadingMessage = { role: 'loading', content: '' };
+    const loadingMessage: Message = { role: 'loading', content: '' };
     setMessages(prev => [...prev, loadingMessage]);
 
     setTimeout(() => {
@@ -132,11 +132,11 @@ const Dashboard = (DashboardProps: DashboardProps) => {
     e.preventDefault();
     if (fileAreaMessage.trim() === '') return;
 
-    const userMessage = { role: 'user', content: message };
+    const userMessage: Message = { role: 'user', content: message };
     setFileAreaMessages([...messages, userMessage]);
     setMessage('');
 
-    const loadingMessage = { role: 'loading', content: '' };
+    const loadingMessage: Message = { role: 'loading', content: '' };
     setMessages(prev => [...prev, loadingMessage]);
 
     setTimeout(() => {
@@ -215,7 +215,11 @@ const Dashboard = (DashboardProps: DashboardProps) => {
                   onClick={() => setExpandedCardIndex(expandedCardIndex === index ? null : index)}
                 >
                   <div className="h-48 overflow-hidden">
-                    <img
+                    <Image
+                      width={1000}
+                      height={1000}
+                      quality={100}
+                      priority={true}
                       src={card.image}
                       alt={card.title}
                       className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
@@ -257,7 +261,7 @@ const Dashboard = (DashboardProps: DashboardProps) => {
                 AI Assistant
               </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-4">
-                I'm your AI travel companion. I can answer questions and help you prepare required documents for your trip.
+                I`&apos;`m your AI travel companion. I can answer questions and help you prepare required documents for your trip.
               </p>
 
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-inner p-4">
@@ -323,7 +327,7 @@ const Dashboard = (DashboardProps: DashboardProps) => {
             AI Assistant
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
-            I'm your AI travel companion. I can answer questions and help you prepare required documents for your trip.
+            I`&apos;`m your AI travel companion. I can answer questions and help you prepare required documents for your trip.
           </p>
 
           <div className="bg-white dark:bg-gray-900 rounded-xl shadow-inner p-4">
